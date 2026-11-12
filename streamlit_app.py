@@ -212,11 +212,11 @@ try:
 
     next_2w = "ALL" if active_f == "2W" else "2W"
     bg_2w = "background-color:#BBDEFB;border-color:#1565C0;" if active_f == "2W" else ""
-    c2.markdown(f"<a href='?f={next_2w}' target='_self' class='click-card' style='{bg_2w}'><div style='font-weight:700;font-size:0.95rem;color:#006064;'>🛵 מעורבות דו-גלגלי</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#006064;'>{pct_2w}%</div><div style='font-size:0.8rem;color:#555;'>({cnt_2w})</div></a>", unsafe_allow_html=True)
+    c2.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:0.95rem;color:#006064;'>🛵 מעורבות דו-גלגלי</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#006064;'>{pct_2w}%</div><div style='font-size:0.8rem;color:#555;'>({cnt_2w})</div></div>", unsafe_allow_html=True)
 
     next_vru = "ALL" if active_f == "VRU" else "VRU"
     bg_vru = "background-color:#BBDEFB;border-color:#1565C0;" if active_f == "VRU" else ""
-    c3.markdown(f"<a href='?f={next_vru}' target='_self' class='click-card' style='{bg_vru}'><div style='font-weight:700;font-size:0.95rem;color:#1565C0;'>🚶 אוכלוסיות סיכון</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#1565C0;'>{pct_vru}%</div><div style='font-size:0.8rem;color:#555;'>({cnt_vru})</div></a>", unsafe_allow_html=True)
+    c3.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:0.95rem;color:#1565C0;'>🚶 אוכלוסיות סיכון</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#1565C0;'>{pct_vru}%</div><div style='font-size:0.8rem;color:#555;'>({cnt_vru})</div></div>", unsafe_allow_html=True)
     
     c4.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:0.95rem;color:#4A148C;'>📰 מקורות מידע</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#4A148C;'>{total_sources}</div></div>", unsafe_allow_html=True)
     c5.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:0.95rem;color:#0D47A1;'>📊 סה\"כ אירועים</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#0D47A1;'>{total_base}</div></div>", unsafe_allow_html=True)

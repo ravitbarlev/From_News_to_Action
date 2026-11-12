@@ -171,9 +171,9 @@ try:
         df_all['source'].isin(sel_src) &
         df_all['hazard_level'].isin(sel_tl)
     ].copy()
-
+    
     if isinstance(date_range, (tuple, list)) and len(date_range) == 2:
-        start_d, end_d = date_range, date_range
+        start_d, end_d = date_range
         df_base = df_base[(df_base['pub_date'].dt.date >= start_d) & (df_base['pub_date'].dt.date <= end_d)]
 
     if only_red:

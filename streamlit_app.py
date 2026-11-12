@@ -41,6 +41,23 @@ div[data-baseweb="tag"] {
 div[data-baseweb="tag"] svg {
     fill: #01579B !important;
 }
+/* שינוי צבע תגיות הבחירה (Multiselect) מאדום לתכלת */
+div[data-baseweb="tag"] {
+    background-color: #B3E5FC !important;
+    color: #01579B !important;
+    border-radius: 6px !important;
+}
+
+/* שינוי צבע אייקון ה-X למחיקת תגית */
+div[data-baseweb="tag"] svg {
+    fill: #01579B !important;
+}
+
+/* שינוי צבע המסגרת של תיבת הסינון כשלוחצים עליה מאדום לתכלת-כחול */
+div[data-baseweb="select"] > div:focus-within {
+    border-color: #0288D1 !important;
+    box-shadow: 0 0 0 1px #0288D1 !important;
+}
 </style>
 """, unsafe_allow_html=True)
 

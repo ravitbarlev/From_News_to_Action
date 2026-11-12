@@ -23,7 +23,7 @@ st.markdown("""
 .click-card {
     background-color: #FFFFFF; padding: 14px; border-radius: 10px;
     border: 2px solid #90CAF9; box-shadow: 0 2px 4px rgba(0,0,0,0.08); text-align: center;
-    min-height: 115px; display: flex; flex-direction: column; justify-content: center;
+    min-height: 115px; display: flex !important; flex-direction: column; justify-content: center;
     cursor: pointer; transition: all 0.2s ease; text-decoration: none !important; color: #111 !important;
 }
 .click-card:hover {
@@ -33,6 +33,13 @@ st.markdown("""
     background-color: #F4F9FF; padding: 14px; border-radius: 10px;
     border: 1.5px solid #90CAF9; box-shadow: 0 2px 4px rgba(0,0,0,0.06); text-align: center;
     min-height: 115px; display: flex; flex-direction: column; justify-content: center;
+}
+div[data-baseweb="tag"] {
+    background-color: #B3E5FC !important;
+    color: #01579B !important;
+}
+div[data-baseweb="tag"] svg {
+    fill: #01579B !important;
 }
 </style>
 """, unsafe_allow_html=True)

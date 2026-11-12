@@ -206,30 +206,29 @@ try:
     pct_2w = round((cnt_2w / total_base) * 100) if total_base else 0
     pct_vru = round((cnt_vru / total_base) * 100) if total_base else 0
 
-    # ------------------ שורה 1: 5 מדדי מפתח ------------------
+    # ------------------ שורה 1: 5 מדדי מפתח ------------------   
     c1, c2, c3, c4, c5 = st.columns(5)
-    c1.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:0.95rem;color:#B71C1C;'>💀 קטלניות / קשות</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#B71C1C;'>{fatal_cnt}</div></div>", unsafe_allow_html=True)
+    c1.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:1.15rem;color:#B71C1C;'>💀 קטלניות / קשות</div><div style='font-weight:800;font-size:2.4rem;margin-top:6px;color:#B71C1C;'>{fatal_cnt}</div></div>", unsafe_allow_html=True)
 
     next_2w = "ALL" if active_f == "2W" else "2W"
     bg_2w = "background-color:#BBDEFB;border-color:#1565C0;" if active_f == "2W" else ""
-    c2.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:0.95rem;color:#006064;'>🛵 מעורבות דו-גלגלי</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#006064;'>{pct_2w}%</div><div style='font-size:0.8rem;color:#555;'>({cnt_2w})</div></div>", unsafe_allow_html=True)
+    c2.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:1.15rem;color:#006064;'>🛵 מעורבות דו-גלגלי</div><div style='font-weight:800;font-size:2.4rem;margin-top:6px;color:#006064;'>{pct_2w}%</div><div style='font-size:0.95rem;color:#444;'>({cnt_2w})</div></div>", unsafe_allow_html=True)
 
     next_vru = "ALL" if active_f == "VRU" else "VRU"
     bg_vru = "background-color:#BBDEFB;border-color:#1565C0;" if active_f == "VRU" else ""
-    c3.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:0.95rem;color:#1565C0;'>🚶 אוכלוסיות סיכון</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#1565C0;'>{pct_vru}%</div><div style='font-size:0.8rem;color:#555;'>({cnt_vru})</div></div>", unsafe_allow_html=True)
+    c3.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:1.15rem;color:#1565C0;'>🚶 אוכלוסיות סיכון</div><div style='font-weight:800;font-size:2.4rem;margin-top:6px;color:#1565C0;'>{pct_vru}%</div><div style='font-size:0.95rem;color:#444;'>({cnt_vru})</div></div>", unsafe_allow_html=True)
     
-    c4.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:0.95rem;color:#4A148C;'>📰 מקורות מידע</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#4A148C;'>{total_sources}</div></div>", unsafe_allow_html=True)
-    c5.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:0.95rem;color:#0D47A1;'>📊 סה\"כ אירועים</div><div style='font-weight:800;font-size:1.85rem;margin-top:4px;color:#0D47A1;'>{total_base}</div></div>", unsafe_allow_html=True)
+    c4.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:1.15rem;color:#4A148C;'>📰 מקורות מידע</div><div style='font-weight:800;font-size:2.4rem;margin-top:6px;color:#4A148C;'>{total_sources}</div></div>", unsafe_allow_html=True)
+    c5.markdown(f"<div class='kpi-card'><div style='font-weight:700;font-size:1.15rem;color:#0D47A1;'>📊 סה\"כ אירועים</div><div style='font-weight:800;font-size:2.4rem;margin-top:6px;color:#0D47A1;'>{total_base}</div></div>", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ------------------ שורה 2: כרטיסיות מדד הרמזור ------------------
     st.markdown("<h4 style='text-align: right;'>🚦 מדד רמזור: התרעות אנומליה מרחבית (רדיוס 500 מ' / 90 יום)</h4>", unsafe_allow_html=True)
     tl1, tl2, tl3 = st.columns(3)
-    tl1.markdown(f"<div class='meta-card' style='border-top: 5px solid #2E7D32;'><div style='color:#2E7D32;font-weight:bold;'>🟢 תקין / בודד (1)</div><div style='font-size:1.85rem;font-weight:800;margin:4px 0;'>{green_cnt}</div><div style='font-size:0.8rem;color:#666;'>אירוע יחיד במרחב</div></div>", unsafe_allow_html=True)
-    tl2.markdown(f"<div class='meta-card' style='border-top: 5px solid #F57C00;'><div style='color:#F57C00;font-weight:bold;'>🟠 רמת אזהרה (2)</div><div style='font-size:1.85rem;font-weight:800;margin:4px 0;'>{orange_cnt}</div><div style='font-size:0.8rem;color:#666;'>תאונות ברדיוס 500 מ'</div></div>", unsafe_allow_html=True)
-    tl3.markdown(f"<div class='meta-card' style='border-top: 5px solid #D32F2F;'><div style='color:#D32F2F;font-weight:bold;'>🔴 אנומליה מרחבית (+3)</div><div style='font-size:1.85rem;font-weight:800;margin:4px 0;'>{red_cnt}</div><div style='font-size:0.8rem;color:#666;'>suspected_hazard = True</div></div>", unsafe_allow_html=True)
-
+    tl1.markdown(f"<div class='meta-card' style='border-top: 5px solid #2E7D32;'><div style='color:#2E7D32;font-weight:bold;font-size:1.15rem;'>🟢 תקין / בודד (1)</div><div style='font-size:2.4rem;font-weight:800;margin:6px 0;'>{green_cnt}</div><div style='font-size:0.95rem;color:#555;'>אירוע יחיד במרחב</div></div>", unsafe_allow_html=True)
+    tl2.markdown(f"<div class='meta-card' style='border-top: 5px solid #F57C00;'><div style='color:#F57C00;font-weight:bold;font-size:1.15rem;'>🟠 רמת אזהרה (2)</div><div style='font-size:2.4rem;font-weight:800;margin:6px 0;'>{orange_cnt}</div><div style='font-size:0.95rem;color:#555;'>תאונות ברדיוס 500 מ'</div></div>", unsafe_allow_html=True)
+    tl3.markdown(f"<div class='meta-card' style='border-top: 5px solid #D32F2F;'><div style='color:#D32F2F;font-weight:bold;font-size:1.15rem;'>🔴 אנומליה מרחבית (+3)</div><div style='font-size:2.4rem;font-weight:800;margin:6px 0;'>{red_cnt}</div><div style='font-size:0.95rem;color:#555;'>suspected_hazard = True</div></div>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
 
     # ------------------ שורה 3: מפה אינטראקטיבית ------------------
@@ -255,6 +254,7 @@ try:
         )
         st.pydeck_chart(
             pdk.Deck(
+                map_style='light',
                 layers=[layer],
                 initial_view_state=view_state,
                 tooltip={"html": "<b>מיקום:</b> {loc}<br/><b>סטטוס:</b> {hazard_level}<br/><b>חומרה:</b> {sev}<br/><b>תאריך:</b> {date_str}"}

@@ -61,7 +61,17 @@ div[data-baseweb="select"] > div:focus-within {
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<h1 style='text-align: right;'>🚨 From News To Action</h1>", unsafe_allow_html=True)
+st.markdown("""
+<h1 style='text-align: right; display: flex; align-items: center; justify-content: flex-end; gap: 12px; color: #0D47A1;'>
+    <span>From News To Action</span>
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#0288D1" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <circle cx="12" cy="12" r="6"></circle>
+        <circle cx="12" cy="12" r="2"></circle>
+        <line x1="12" y1="2" x2="12" y2="6"></line>
+    </svg>
+</h1>
+""", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: right;'>מערכת אג'נטית לניתוח והשלמת נתוני תאונות דרכים עבור הנהלת הרלב\"ד</h3>", unsafe_allow_html=True)
 st.markdown("---")
 

@@ -107,11 +107,11 @@ def classify_vuln(raw_v, v_list):
             cats.add('רוכבי דו-גלגלי / מיקרו-מוביליטי')
     return list(cats)
 
-def compute_spatial_anomaly(df):
+def valid_mask(df):
     df['cluster_count'], df['suspected__hazard'] = 1, False
     df['hazard_level'] = '🟢 תקין (אירוע בודד)'
     df['r'], df['g'], df['b'] = 46, 125, 50
-        valid_mask = (
+    valid_mask = (
         df['lat'].notna() & df['lon'].notna() & df['pub_date'].notna()
         & (~df['loc'].str.lower().isin(('not specified', 'לא מצוין', 'לא פוענח', 'none', '')))
         & (~((df['lat'].round(4) == 32.0927) & (df['lon'].round(4) == 34.8465)))
@@ -171,7 +171,7 @@ def load_data():
             'has_vru': len(vulns) > 0,
             'raw_text': d.get('raw_text', '')
         })
-    return compute_spatial_anomaly(pd.DataFrame(rows).drop_duplicates(subset=['id']))
+    return valid_mask(pd.DataFrame(rows).drop_duplicates(subset=['id']))
 
 try:
     df_all = load_data()

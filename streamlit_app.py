@@ -141,9 +141,10 @@ def load_data():
         df_raw = pd.read_sql_query("SELECT id, source, published_date, article_data FROM traffic_incidents;", conn)
     
     exclude_keywords = (
-        'הפגנה', 'מחאה', 'תקיפה', 'עזה', 'פיגוע', 'קטטה', 
-        'ירי', 'רקטה', 'טיל', 'דקירה', 'שריפה בדירה', 'טבע למוות'
+    'הפגנה', 'מחאה', 'תקיפה', 'עזה', 'פיגוע', 'קטטה', 
+    'אירוע ירי', 'רקטה', 'טיל', 'דקירה', 'שריפה בדירה', 'טבע למוות', 'רכבי היוקרה'
     )
+
     rows = []
     
     for _, r in df_raw.iterrows():

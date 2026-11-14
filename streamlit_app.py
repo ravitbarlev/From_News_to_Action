@@ -90,6 +90,22 @@ veh_map = {
     'scooter': 'קטנוע', 'commercial vehicle': 'רכב מסחרי'
 }
 two_wheel_keys = ('motorcycle', 'scooter', 'bicycle', 'e-bike', 'e-scooter', 'אופנוע', 'קורקינט', 'אופניים', 'קטנוע')
+def classify_vuln(raw_v, v_list):
+    cats = set()
+    t = str(raw_v).lower() if raw_v else ""
+    if t and t not in ('none', 'not specified', 'לא מצוין', '[]', 'nan'):
+        if any(w in t for w in ('pedestrian', 'הולך רגל', 'הולכת רגל', 'הולכי רגל')):
+            cats.add('הולכי רגל')
+        if any(w in t for w in ('child', 'kid', 'boy', 'girl', 'teen', 'youth', 'ילד', 'ילדה', 'נער', 'נערה', 'בן 1', 'בת 1')):
+            cats.add('ילדים ובני נוער (0-18)')
+        if any(w in t for w in ('70', '80', '90', '65', 'elderly', 'senior', 'קשיש', 'קשישה', 'מבוגר')):
+            cats.add('אזרחים ותיקים (60+)')
+    if isinstance(v_list, list):
+        vs = " ".join(str(v).lower() for v in v_list)
+        if any(w in vs for w in two_wheel_keys):
+            cats.add('רוכבי דו-גלגלי / מיקרו-מוביליטי')
+    return list(cats)
+
 
 def compute_spatial_anomaly(df):
     df['cluster_count'], df['suspected__hazard'] = 1, False

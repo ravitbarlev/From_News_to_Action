@@ -143,7 +143,7 @@ def load_data():
     for _, r in df_raw.iterrows():
         d = json.loads(r['article_data']) if isinstance(r['article_data'], str) else r['article_data']
         sev = sev_map.get(str(d.get('accident_severity', 'לא מצוין')).strip().lower(), str(d.get('accident_severity', 'לא מצוין')).strip())
-            try:
+        try:
             lat, lon = float(d.get('latitude')), float(d.get('longitude'))
             if not (29.0 <= lat <= 33.5 and 34.0 <= lon <= 36.0) or (round(lat, 4) == 31.0461 and round(lon, 4) == 34.8516):
                 lat, lon = None, None

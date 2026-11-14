@@ -139,9 +139,22 @@ def valid_mask(df):
 def load_data():
     with psycopg.connect(conn_str) as conn:
         df_raw = pd.read_sql_query("SELECT id, source, published_date, article_data FROM traffic_incidents;", conn)
+    
+    # 1. הגדרה לפני ה-FOR
+    exclude_keywords = (
+        'הפגנה', 'מחאה', 'תקיפה', 'עזה', 'פיגוע', 'קטטה', 
+        'ירי', 'רקטה', 'טיל', 'דקירה', 'שריפה בדירה', 'טבע למוות'
+    )
     rows = []
+    
+    # 2. בדיקה בתוך (אחרי תחילת) ה-FOR
     for _, r in df_raw.iterrows():
         d = json.loads(r['article_data']) if isinstance(r['article_data'], str) else r['article_data']
+        raw_txt = str(d.get('raw_text', ''))
+        
+        if d.get('is_traffic_accident') is False or any(bad_word in raw_txt for bad_word in exclude_keywords):
+            continue
+            
         sev = sev_map.get(str(d.get('accident_severity', 'לא מצוין')).strip().lower(), str(d.get('accident_severity', 'לא מצוין')).strip())
         try:
             lat, lon = float(d.get('latitude')), float(d.get('longitude'))
@@ -169,10 +182,9 @@ def load_data():
             'vulns': vulns,
             'has_2w': has_2w,
             'has_vru': len(vulns) > 0,
-            'raw_text': d.get('raw_text', '')
+            'raw_text': raw_txt
         })
-    return valid_mask(pd.DataFrame(rows).drop_duplicates(subset=['id']))
-
+    return compute_spatial_anomaly(pd.DataFrame(rows).drop_duplicates(subset=['id']))
 try:
     df_all = load_data()
     active_f = st.query_params.get("f", "ALL")

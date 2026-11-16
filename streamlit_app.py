@@ -347,6 +347,28 @@ try:
         else:
             st.info("אין נתוני כלי רכב לטווח שנבחר.")
     
+        # ------------------ מפת מוקדי סיכון בזמן אמת (רקע בהיר) ------------------
+    map_df = df_f.dropna(subset=['lat', 'lon']).copy()
+    if not map_df.empty:
+        st.markdown("<h3 style='text-align: right; direction: rtl; margin-top: 20px;'>🗺️ מפת מוקדי סיכון בזמן אמת</h3>", unsafe_allow_html=True)
+        layer = pdk.Layer(
+            "ScatterplotLayer",
+            data=map_df,
+            get_position='[lon, lat]',
+            get_color='[r, g, b, 210]',
+            get_radius=350,
+            radius_min_pixels=5,
+            radius_max_pixels=18,
+            pickable=True,
+        )
+        view_state = pdk.ViewState(latitude=31.85, longitude=34.95, zoom=7.5)
+        st.pydeck_chart(pdk.Deck(
+            layers=[layer],
+            initial_view_state=view_state,
+            map_style="https://cartocdn.com",
+            tooltip={"text": "מיקום: {loc}\nחומרה: {sev}\nרמזור: {hazard_level}"}
+        ))
+
     # ------------------ טבלת האירועים המסוננים ------------------
     st.markdown("<h3 style='text-align: right; direction: rtl; margin-top: 20px;'>📋 צפייה בטבלת האירועים המסוננים</h3>", unsafe_allow_html=True)
     disp_df = df_f[['id', 'pub_date', 'source', 'loc', 'sev', 'hazard_level', 'cluster_count', 'raw_text']].sort_values('pub_date', ascending=False)

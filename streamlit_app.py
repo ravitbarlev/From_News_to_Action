@@ -348,7 +348,7 @@ try:
             st.info("אין נתוני כלי רכב לטווח שנבחר.")
     
  
-           # ------------------ מפת מוקדי סיכון בזמן אמת (רקע בהיר) ------------------
+       # ------------------ מפת מוקדי סיכון בזמן אמת (ממורכזת על ישראל) ------------------
     map_df = df_f.dropna(subset=['lat', 'lon']).copy()
     if not map_df.empty:
         st.markdown("<h3 style='text-align: right; direction: rtl; margin-top: 20px;'>🗺️ מפת מוקדי סיכון בזמן אמת</h3>", unsafe_allow_html=True)
@@ -364,15 +364,24 @@ try:
                 '🟠 כתום - אזהרה (2 אירועים)': '#F57C00',
                 '🟢 תקין (אירוע בודד)': '#2E7D32'
             },
-            zoom=7.2,
-            center={"lat": 31.85, "lon": 34.95},
-            height=480
+            zoom=7.6,
+            center={"lat": 31.45, "lon": 34.85},
+            height=500
         )
-        fig_map.update_traces(marker=dict(size=10, opacity=0.85))
+        fig_map.update_traces(marker=dict(size=10, opacity=0.88))
         fig_map.update_layout(
             map_style="carto-positron",
             margin=dict(t=10, b=10, l=10, r=10),
-            legend_title_text="מדד רמזור",
+            legend=dict(
+                title=dict(text="מדד רמזור"),
+                yanchor="top",
+                y=0.98,
+                xanchor="right",
+                x=0.99,
+                bgcolor="rgba(255, 255, 255, 0.85)",
+                bordercolor="#90CAF9",
+                borderwidth=1
+            ),
             font=dict(size=14)
         )
         st.plotly_chart(fig_map, use_container_width=True)

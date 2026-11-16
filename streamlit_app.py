@@ -51,14 +51,29 @@ sev_map = {
 sev_rank = {'קטלנית': 5, 'קשה / קטלנית': 4, 'קשה': 3, 'בינונית': 2, 'קלה': 1, 'לא מצוין': 0}
 
 veh_map = {
-    'car': 'רכב פרטי', 'bus': 'אוטובוס', 'motorcycle': 'אופנוע', 'tractor': 'טרקטור',
-    'bicycle': 'אופניים', 'truck': 'משאית', 'electric scooter': 'קורקינט חשמלי',
-    'e-scooter': 'קורקינט חשמלי', 'minibus': 'מיניבוס', 'train': 'רכבת',
-    'electric bicycle': 'אופניים חשמליים', 'e-bike': 'אופניים חשמליים',
-    'mobility scooter': 'קלנועית', 'excavator': 'מחפר / כלי הנדסי',
-    'scooter': 'קטנוע', 'commercial vehicle': 'רכב מסחרי'
+    'car': 'רכב פרטי',
+    'bus': 'אוטובוס',
+    'motorcycle': 'אופנוע / קטנוע',
+    'scooter': 'אופנוע / קטנוע',
+    'קטנוע': 'אופנוע / קטנוע',
+    'אופנוע': 'אופנוע / קטנוע',
+    'bicycle': 'אופניים',
+    'electric bicycle': 'אופניים חשמליים',
+    'e-bike': 'אופניים חשמליים',
+    'electric scooter': 'קורקינט חשמלי',
+    'e-scooter': 'קורקינט חשמלי',
+    'truck': 'משאית / רכב מסחרי',
+    'commercial vehicle': 'משאית / רכב מסחרי',
+    'רכב מסחרי': 'משאית / רכב מסחרי',
+    'minibus': 'מיניבוס / רכב הסעות',
+    'רכב הסעות': 'מיניבוס / רכב הסעות',
+    'tractor': 'טרקטור / כלי הנדסי',
+    'excavator': 'טרקטור / כלי הנדסי',
+    'train': 'רכבת',
+    'mobility scooter': 'קלנועית'
 }
 
+excluded_vehs = {'אוניית משא', 'ספינת תענוגות', 'סירה', 'יאכטה', 'מטוס', 'מסוק', 'ship', 'boat', 'cruise ship', 'cargo ship'}
 two_wheel_keys = ('motorcycle', 'scooter', 'bicycle', 'e-bike', 'e-scooter', 'אופנוע', 'קורקינט', 'אופניים', 'קטנוע')
 
 def classify_vuln(raw_v, v_list):
@@ -284,13 +299,15 @@ try:
 
     with g3:
         st.subheader("כלי רכב מעורבים")
-        all_vehs = []
+                all_vehs = []
         for v_list in df_f['vehs']:
             if isinstance(v_list, list):
                 for v in v_list:
                     v_clean = str(v).strip().lower()
-                    if v_clean and v_clean not in ('none', 'not specified', 'unknown', 'לא מצוין'):
-                        all_vehs.append(veh_map.get(v_clean, v_clean))
+                    if v_clean and v_clean not in ('none', 'not specified', 'unknown', 'לא מצוין') and v_clean not in excluded_vehs:
+                        mapped_v = veh_map.get(v_clean, v_clean)
+                        if mapped_v not in excluded_vehs:
+                            all_vehs.append(mapped_v)
         if all_vehs:
             veh_df = pd.Series(all_vehs).value_counts().reset_index()
             veh_df.columns = ['סוג רכב', 'כמות']

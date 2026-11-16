@@ -297,9 +297,9 @@ try:
         fig_haz.update_layout(font=dict(size=14), showlegend=False, margin=dict(t=30, b=20, l=10, r=10))
         st.plotly_chart(fig_haz, use_container_width=True)
 
-    with g3:
+        with g3:
         st.subheader("כלי רכב מעורבים")
-                all_vehs = []
+        all_vehs = []
         for v_list in df_f['vehs']:
             if isinstance(v_list, list):
                 for v in v_list:

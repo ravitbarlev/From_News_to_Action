@@ -278,25 +278,43 @@ try:
         st.plotly_chart(fig_sev, use_container_width=True)
 
     with g2:
-        st.subheader("אירועים לפי מדד רמזור")
+        st.markdown("<h3 style='text-align: right; direction: rtl;'>אירועים לפי מדד רמזור</h3>", unsafe_allow_html=True)
         haz_df = df_f['hazard_level'].value_counts().reset_index()
         haz_df.columns = ['מדד רמזור', 'כמות']
+        short_labels = {
+            '🔴 אדום - התרעת אנומליה מרחבית (3+)': '🔴 אדום<br>אנומליה (3+)',
+            '🟠 כתום - אזהרה (2 אירועים)': '🟠 כתום<br>אזהרה (2)',
+            '🟢 תקין (אירוע בודד)': '🟢 תקין<br>אירוע בודד'
+        }
+        haz_df['תווית קצרה'] = haz_df['מדד רמזור'].map(short_labels).fillna(haz_df['מדד רמזור'])
+
         fig_haz = px.bar(
             haz_df,
-            x='מדד רמזור',
+            x='תווית קצרה',
             y='כמות',
             text='כמות',
             color='מדד רמזור',
+            custom_data=['מדד רמזור'],
             color_discrete_map={
                 '🔴 אדום - התרעת אנומליה מרחבית (3+)': '#D32F2F',
                 '🟠 כתום - אזהרה (2 אירועים)': '#F57C00',
                 '🟢 תקין (אירוע בודד)': '#2E7D32'
             }
         )
-        fig_haz.update_traces(textposition='outside', cliponaxis=False)
-        fig_haz.update_layout(font=dict(size=14), showlegend=False, margin=dict(t=30, b=20, l=10, r=10))
+        fig_haz.update_traces(
+            textposition='outside',
+            cliponaxis=False,
+            hovertemplate="<b>%{customdata[0]}</b><br>מספר אירועים: %{y}<extra></extra>"
+        )
+        fig_haz.update_layout(
+            font=dict(size=14),
+            showlegend=False,
+            xaxis_title="",
+            yaxis_title="מספר אירועים",
+            xaxis=dict(tickangle=0),
+            margin=dict(t=35, b=20, l=10, r=10)
+        )
         st.plotly_chart(fig_haz, use_container_width=True)
-
     with g3:
         st.subheader("כלי רכב מעורבים")
         all_vehs = []
@@ -330,7 +348,7 @@ try:
             st.info("אין נתוני כלי רכב לטווח שנבחר.")
     
     # ------------------ טבלת האירועים המסוננים ------------------
-    st.subheader("📋 צפייה בטבלת האירועים המסוננים")
+    st.markdown("<h3 style='text-align: right; direction: rtl; margin-top: 20px;'>📋 צפייה בטבלת האירועים המסוננים</h3>", unsafe_allow_html=True)
     disp_df = df_f[['id', 'pub_date', 'source', 'loc', 'sev', 'hazard_level', 'cluster_count', 'raw_text']].sort_values('pub_date', ascending=False)
     disp_df.columns = ['מזהה', 'תאריך פרסום', 'מקור', 'מיקום', 'חומרה', 'מדד רמזור', 'מספר אירועים במוקד', 'טקסט דיווח']
     st.dataframe(disp_df, use_container_width=True, hide_index=True)

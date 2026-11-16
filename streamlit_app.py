@@ -201,22 +201,38 @@ try:
 
     df_f = df_all[mask].copy()
 
-    # ------------------ כרטיסי KPI עליונים ------------------
+        # ------------------ כרטיסי KPI עליונים (מיושרים וב-RTL) ------------------
     c1, c2, c3, c4 = st.columns(4)
     total_acc = len(df_f)
     red_cnt = int((df_f['cluster_count'] >= 3).sum())
     tw_pct = (df_f['has_2w'].mean() * 100) if total_acc > 0 else 0.0
     vru_pct = (df_f['has_vru'].mean() * 100) if total_acc > 0 else 0.0
-   
-    raw_total = len(df_all)  # או לשמור את אורך df_raw לפני האיחוד
-    total_raw_all = int(df_all['raw_total'].iloc[0]) if not df_all.empty else 0
-
     filtered_raw_acc = int(df_f['merged_count'].sum()) if not df_f.empty else 0
-    sub_txt = f"אוחדו מתוך {filtered_raw_acc} דיווחים גולמיים"
-    c1.markdown(f"<div class='kpi-card'><h4>אירועים ייחודיים</h4><h2>{total_acc}</h2><small style='color:#555;'>{sub_txt}</small></div>", unsafe_allow_html=True)   
-    c2.markdown(f"<div class='kpi-card'><h4>🔴 מוקדי סיכון אדומים (3+)</h4><h2 style='color:#D32F2F;'>{red_cnt}</h2></div>", unsafe_allow_html=True)
-    c3.markdown(f"<div class='kpi-card'><h4>🛵 מעורבות דו-גלגלי</h4><h2>{tw_pct:.1f}%</h2></div>", unsafe_allow_html=True)
-    c4.markdown(f"<div class='kpi-card'><h4>🚶 פגיעות ב-VRU</h4><h2>{vru_pct:.1f}%</h2></div>", unsafe_allow_html=True)
+
+    c1.markdown(
+        f"<div class='kpi-card' dir='rtl'><h4 style='margin:0;'>אירועים ייחודיים</h4>"
+        f"<h2 style='margin:8px 0; color:#0D47A1;'>{total_acc}</h2>"
+        f"<small style='color:#555;'>אוחדו מתוך {filtered_raw_acc} דיווחים גולמיים</small></div>",
+        unsafe_allow_html=True
+    )
+    c2.markdown(
+        f"<div class='kpi-card' dir='rtl'><h4 style='margin:0;'>🔴 מוקדי סיכון אדומים (3+)</h4>"
+        f"<h2 style='margin:8px 0; color:#D32F2F;'>{red_cnt}</h2>"
+        f"<small style='color:transparent;'>&nbsp;</small></div>",
+        unsafe_allow_html=True
+    )
+    c3.markdown(
+        f"<div class='kpi-card' dir='rtl'><h4 style='margin:0;'>🛵 מעורבות דו-גלגלי</h4>"
+        f"<h2 style='margin:8px 0; color:#0288D1;'>{tw_pct:.1f}%</h2>"
+        f"<small style='color:transparent;'>&nbsp;</small></div>",
+        unsafe_allow_html=True
+    )
+    c4.markdown(
+        f"<div class='kpi-card' dir='rtl'><h4 style='margin:0;'>🚶 פגיעות ב-VRU</h4>"
+        f"<h2 style='margin:8px 0; color:#F57C00;'>{vru_pct:.1f}%</h2>"
+        f"<small style='color:transparent;'>&nbsp;</small></div>",
+        unsafe_allow_html=True
+    )
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -231,12 +247,19 @@ try:
         st.subheader("אירועים לפי מדד רמזור")
         haz_df = df_f['hazard_level'].value_counts().reset_index()
         haz_df.columns = ['מדד רמזור', 'כמות']
-        fig_haz = px.bar(haz_df, x='מדד רמזור', y='כמות', color='מדד רמזור',
-                         color_discrete_map={
-                             '🔴 אדום - התרעת אנומליה מרחבית (3+)': '#D32F2F',
-                             '🟠 כתום - אזהרה (2 אירועים)': '#F57C00',
-                             '🟢 תקין (אירוע בודד)': '#2E7D32'
-                         })
+        fig_haz = px.bar(
+            haz_df,
+            x='מדד רמזור',
+            y='כמות',
+            text='כמות',
+            color='מדד רמזור',
+            color_discrete_map={
+                '🔴 אדום - התרעת אנומליה מרחבית (3+)': '#D32F2F',
+                '🟠 כתום - אזהרה (2 אירועים)': '#F57C00',
+                '🟢 תקין (אירוע בודד)': '#2E7D32'
+            }
+        )
+        fig_haz.update_traces(textposition='outside', cliponaxis=False)
         st.plotly_chart(fig_haz, use_container_width=True)
 
     map_df = df_f.dropna(subset=['lat', 'lon'])
@@ -251,9 +274,14 @@ try:
             pickable=True,
         )
         view_state = pdk.ViewState(latitude=31.8, longitude=34.9, zoom=7.5)
-        st.pydeck_chart(pdk.Deck(layers=[layer], initial_view_state=view_state,
-                                 tooltip={"text": "מיקום: {loc}\nחומרה: {sev}\nרמזור: {hazard_level}"}))
-
+        st.pydeck_chart(pdk.Deck(
+            layers=[layer],
+            initial_view_state=view_state,
+            map_style="light",
+            tooltip={"text": "מיקום: {loc}\nחומרה: {sev}\nרמזור: {hazard_level}"}
+        ))
+     
+    
     # ------------------ טבלת האירועים המסוננים ------------------
     st.subheader("📋 צפייה בטבלת האירועים המסוננים")
     disp_df = df_f[['id', 'pub_date', 'source', 'loc', 'sev', 'hazard_level', 'cluster_count', 'raw_text']].sort_values('pub_date', ascending=False)

@@ -13,11 +13,19 @@ conn_str = st.secrets["DATABASE_URL"]
 st.markdown("""
 <style>
 .stApp, [data-testid="stHeader"] { background-color: #E3F2FD; }
+html, body, [class*="css"] { font-size: 16px !important; }
+h3 { font-size: 1.45rem !important; }
+[data-testid="stSidebar"] label, [data-testid="stSidebar"] p { font-size: 15px !important; }
+[data-testid="stDataFrame"] { font-size: 15px !important; }
 .kpi-card {
-    background-color: #FFFFFF; padding: 14px; border-radius: 10px;
+    background-color: #FFFFFF; padding: 10px 12px; border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.08); text-align: center;
-    height: 145px; display: flex; flex-direction: column; justify-content: center;
+    height: 155px; display: flex; flex-direction: column; justify-content: center;
+    overflow: hidden;
 }
+.kpi-card h4 { font-size: 1.15rem !important; margin: 0 !important; }
+.kpi-card h2 { font-size: 2.1rem !important; margin: 4px 0 !important; }
+.kpi-card small { font-size: 0.85rem !important; line-height: 1.2 !important; }
 div[data-baseweb="tag"] { background-color: #B3E5FC !important; color: #01579B !important; border-radius: 6px !important; }
 div[data-baseweb="tag"] svg { fill: #01579B !important; }
 div[data-baseweb="select"] > div:focus-within { border-color: #0288D1 !important; box-shadow: 0 0 0 1px #0288D1 !important; }

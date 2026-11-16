@@ -347,27 +347,35 @@ try:
         else:
             st.info("אין נתוני כלי רכב לטווח שנבחר.")
     
+ 
         # ------------------ מפת מוקדי סיכון בזמן אמת (רקע בהיר) ------------------
     map_df = df_f.dropna(subset=['lat', 'lon']).copy()
     if not map_df.empty:
         st.markdown("<h3 style='text-align: right; direction: rtl; margin-top: 20px;'>🗺️ מפת מוקדי סיכון בזמן אמת</h3>", unsafe_allow_html=True)
-        layer = pdk.Layer(
-            "ScatterplotLayer",
-            data=map_df,
-            get_position='[lon, lat]',
-            get_color='[r, g, b, 210]',
-            get_radius=350,
-            radius_min_pixels=5,
-            radius_max_pixels=18,
-            pickable=True,
+        fig_map = px.scatter_mapbox(
+            map_df,
+            lat="lat",
+            lon="lon",
+            color="hazard_level",
+            hover_name="loc",
+            hover_data={"sev": True, "source": True, "lat": False, "lon": False, "hazard_level": False},
+            color_discrete_map={
+                '🔴 אדום - התרעת אנומליה מרחבית (3+)': '#D32F2F',
+                '🟠 כתום - אזהרה (2 אירועים)': '#F57C00',
+                '🟢 תקין (אירוע בודד)': '#2E7D32'
+            },
+            zoom=7.2,
+            center={"lat": 31.85, "lon": 34.95},
+            height=480
         )
-        view_state = pdk.ViewState(latitude=31.85, longitude=34.95, zoom=7.5)
-        st.pydeck_chart(pdk.Deck(
-            layers=[layer],
-            initial_view_state=view_state,
-            map_style="https://cartocdn.com",
-            tooltip={"text": "מיקום: {loc}\nחומרה: {sev}\nרמזור: {hazard_level}"}
-        ))
+        fig_map.update_traces(marker=dict(size=10, opacity=0.85))
+        fig_map.update_layout(
+            mapbox_style="carto-positron",
+            margin=dict(t=10, b=10, l=10, r=10),
+            legend_title_text="מדד רמזור",
+            font=dict(size=14)
+        )
+        st.plotly_chart(fig_map, use_container_width=True)
 
     # ------------------ טבלת האירועים המסוננים ------------------
     st.markdown("<h3 style='text-align: right; direction: rtl; margin-top: 20px;'>📋 צפייה בטבלת האירועים המסוננים</h3>", unsafe_allow_html=True)

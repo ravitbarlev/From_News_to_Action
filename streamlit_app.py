@@ -164,7 +164,10 @@ def load_data():
             'lat': lat, 'lon': lon, 'vehs': vehs, 'vulns': vulns,
             'has_2w': has_2w, 'has_vru': len(vulns) > 0, 'raw_text': d.get('raw_text', '')
         })
-    df_clean = deduplicate_incidents(pd.DataFrame(rows).drop_duplicates(subset=['id']))
+    df_raw_clean = pd.DataFrame(rows).drop_duplicates(subset=['id'])
+    raw_count = len(df_raw_clean)
+    df_clean = deduplicate_incidents(df_raw_clean)
+    df_clean['raw_total'] = raw_count
     return compute_spatial_anomaly(df_clean)
 try:
     df_all = load_data()

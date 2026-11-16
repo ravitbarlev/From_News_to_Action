@@ -49,6 +49,16 @@ sev_map = {
     'medium': 'בינונית', 'light': 'קלה', 'mild': 'קלה', 'unknown': 'לא מצוין'
 }
 sev_rank = {'קטלנית': 5, 'קשה / קטלנית': 4, 'קשה': 3, 'בינונית': 2, 'קלה': 1, 'לא מצוין': 0}
+
+veh_map = {
+    'car': 'רכב פרטי', 'bus': 'אוטובוס', 'motorcycle': 'אופנוע', 'tractor': 'טרקטור',
+    'bicycle': 'אופניים', 'truck': 'משאית', 'electric scooter': 'קורקינט חשמלי',
+    'e-scooter': 'קורקינט חשמלי', 'minibus': 'מיניבוס', 'train': 'רכבת',
+    'electric bicycle': 'אופניים חשמליים', 'e-bike': 'אופניים חשמליים',
+    'mobility scooter': 'קלנועית', 'excavator': 'מחפר / כלי הנדסי',
+    'scooter': 'קטנוע', 'commercial vehicle': 'רכב מסחרי'
+}
+
 two_wheel_keys = ('motorcycle', 'scooter', 'bicycle', 'e-bike', 'e-scooter', 'אופנוע', 'קורקינט', 'אופניים', 'קטנוע')
 
 def classify_vuln(raw_v, v_list):
@@ -252,8 +262,6 @@ try:
     )
 
     st.markdown("<br>", unsafe_allow_html=True)
-
-
 
     # ------------------ 3 תרשימים בשורה ------------------
     g1, g2, g3 = st.columns(3)

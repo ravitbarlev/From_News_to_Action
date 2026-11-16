@@ -395,3 +395,11 @@ try:
 
 except Exception as e:
     st.error(f"אירעה שגיאה בטעינת הדשבורד: {e}")
+    # ------------------ כפתור ייצוא לאקסל (CSV בעברית) ------------------
+    csv_data = disp_df.to_csv(index=False).encode('utf-8-sig')
+    st.download_button(
+        label="📥 הורדת הנתונים המסוננים לאקסל (CSV)",
+        data=csv_data,
+        file_name=f"ralbad_accidents_{pd.Timestamp.now().strftime('%Y_%m_%d')}.csv",
+        mime="text/csv",
+    )

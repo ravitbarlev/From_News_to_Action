@@ -209,8 +209,10 @@ try:
    
     raw_total = len(df_all)  # או לשמור את אורך df_raw לפני האיחוד
     total_raw_all = int(df_all['raw_total'].iloc[0]) if not df_all.empty else 0
-    sub_txt = f"מתוך {len(df_all)} אירועים ייחודיים ({total_raw_all} גולמיים)"
-    c1.markdown(f"<div class='kpi-card'><h4>אירועים ייחודיים</h4><h2>{total_acc}</h2><small style='color:#555;'>{sub_txt}</small></div>", unsafe_allow_html=True)
+
+    filtered_raw_acc = int(df_f['merged_count'].sum()) if not df_f.empty else 0
+    sub_txt = f"אוחדו מתוך {filtered_raw_acc} דיווחים גולמיים"
+    c1.markdown(f"<div class='kpi-card'><h4>אירועים ייחודיים</h4><h2>{total_acc}</h2><small style='color:#555;'>{sub_txt}</small></div>", unsafe_allow_html=True)   
     c2.markdown(f"<div class='kpi-card'><h4>🔴 מוקדי סיכון אדומים (3+)</h4><h2 style='color:#D32F2F;'>{red_cnt}</h2></div>", unsafe_allow_html=True)
     c3.markdown(f"<div class='kpi-card'><h4>🛵 מעורבות דו-גלגלי</h4><h2>{tw_pct:.1f}%</h2></div>", unsafe_allow_html=True)
     c4.markdown(f"<div class='kpi-card'><h4>🚶 פגיעות ב-VRU</h4><h2>{vru_pct:.1f}%</h2></div>", unsafe_allow_html=True)

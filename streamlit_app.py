@@ -112,15 +112,6 @@ def deduplicate_incidents(df):
                         if s.strip() and s.strip() not in sources:
                             sources.append(s.strip())
                     if sev_rank.get(cand['sev'], 0) > sev_rank.get(base['sev'], 0):
-
-                    veh_map = {
-                    'car': 'רכב פרטי', 'bus': 'אוטובוס', 'motorcycle': 'אופנוע', 'tractor': 'טרקטור',
-                    'bicycle': 'אופניים', 'truck': 'משאית', 'electric scooter': 'קורקינט חשמלי',
-                    'e-scooter': 'קורקינט חשמלי', 'minibus': 'מיניבוס', 'train': 'רכבת',
-                    'electric bicycle': 'אופניים חשמליים', 'e-bike': 'אופניים חשמליים',
-                    'mobility scooter': 'קלנועית', 'excavator': 'מחפר / כלי הנדסי',
-                    'scooter': 'קטנוע', 'commercial vehicle': 'רכב מסחרי'
-                }                      
                         base['sev'] = cand['sev']
                     if isinstance(cand['vehs'], list):
                         for v in cand['vehs']:

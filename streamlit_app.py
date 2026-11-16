@@ -297,7 +297,7 @@ try:
         fig_haz.update_layout(font=dict(size=14), showlegend=False, margin=dict(t=30, b=20, l=10, r=10))
         st.plotly_chart(fig_haz, use_container_width=True)
 
-        with g3:
+    with g3:
         st.subheader("כלי רכב מעורבים")
         all_vehs = []
         for v_list in df_f['vehs']:
@@ -328,26 +328,6 @@ try:
             st.plotly_chart(fig_veh, use_container_width=True)
         else:
             st.info("אין נתוני כלי רכב לטווח שנבחר.")
-
-    map_df = df_f.dropna(subset=['lat', 'lon'])
-    if not map_df.empty:
-        st.subheader("🗺️ מפת מוקדי סיכון בזמן אמת")
-        layer = pdk.Layer(
-            "ScatterplotLayer",
-            data=map_df,
-            get_position='[lon, lat]',
-            get_color='[r, g, b, 200]',
-            get_radius=350,
-            pickable=True,
-        )
-        view_state = pdk.ViewState(latitude=31.8, longitude=34.9, zoom=7.5)
-        st.pydeck_chart(pdk.Deck(
-            layers=[layer],
-            initial_view_state=view_state,
-            map_style="light",
-            tooltip={"text": "מיקום: {loc}\nחומרה: {sev}\nרמזור: {hazard_level}"}
-        ))
-     
     
     # ------------------ טבלת האירועים המסוננים ------------------
     st.subheader("📋 צפייה בטבלת האירועים המסוננים")

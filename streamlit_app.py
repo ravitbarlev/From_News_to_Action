@@ -348,11 +348,11 @@ try:
             st.info("אין נתוני כלי רכב לטווח שנבחר.")
     
  
-        # ------------------ מפת מוקדי סיכון בזמן אמת (רקע בהיר) ------------------
+           # ------------------ מפת מוקדי סיכון בזמן אמת (רקע בהיר) ------------------
     map_df = df_f.dropna(subset=['lat', 'lon']).copy()
     if not map_df.empty:
         st.markdown("<h3 style='text-align: right; direction: rtl; margin-top: 20px;'>🗺️ מפת מוקדי סיכון בזמן אמת</h3>", unsafe_allow_html=True)
-        fig_map = px.scatter_mapbox(
+        fig_map = px.scatter_map(
             map_df,
             lat="lat",
             lon="lon",
@@ -370,12 +370,13 @@ try:
         )
         fig_map.update_traces(marker=dict(size=10, opacity=0.85))
         fig_map.update_layout(
-            mapbox_style="carto-positron",
+            map_style="carto-positron",
             margin=dict(t=10, b=10, l=10, r=10),
             legend_title_text="מדד רמזור",
             font=dict(size=14)
         )
         st.plotly_chart(fig_map, use_container_width=True)
+
 
     # ------------------ טבלת האירועים המסוננים ------------------
     st.markdown("<h3 style='text-align: right; direction: rtl; margin-top: 20px;'>📋 צפייה בטבלת האירועים המסוננים</h3>", unsafe_allow_html=True)

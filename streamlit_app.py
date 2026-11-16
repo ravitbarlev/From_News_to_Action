@@ -89,6 +89,7 @@ def deduplicate_incidents(df):
                 a = np.sin(dlat / 2.0)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2.0)**2
                 if 6371000 * 2 * np.arcsin(np.sqrt(a)) <= 500:
                     used.add(j)
+                    base['merged_count'] += 1
                     for s in str(cand['source']).split(','):
                         if s.strip() and s.strip() not in sources:
                             sources.append(s.strip())

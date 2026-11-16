@@ -203,7 +203,8 @@ try:
     tw_pct = (df_f['has_2w'].mean() * 100) if total_acc > 0 else 0.0
     vru_pct = (df_f['has_vru'].mean() * 100) if total_acc > 0 else 0.0
 
-    c1.markdown(f"<div class='kpi-card'><h4>סה\"כ אירועים ייחודיים</h4><h2>{total_acc}</h2></div>", unsafe_allow_html=True)
+    raw_total = len(df_all)  # או לשמור את אורך df_raw לפני האיחוד
+    c1.markdown(f"<div class='kpi-card'><h4>אירועים ייחודיים</h4><h2>{total_acc}</h2><small style='color:#555;'>אוחדו מ-478 דיווחים</small></div>", unsafe_allow_html=True)
     c2.markdown(f"<div class='kpi-card'><h4>🔴 מוקדי סיכון אדומים (3+)</h4><h2 style='color:#D32F2F;'>{red_cnt}</h2></div>", unsafe_allow_html=True)
     c3.markdown(f"<div class='kpi-card'><h4>🛵 מעורבות דו-גלגלי</h4><h2>{tw_pct:.1f}%</h2></div>", unsafe_allow_html=True)
     c4.markdown(f"<div class='kpi-card'><h4>🚶 פגיעות ב-VRU</h4><h2>{vru_pct:.1f}%</h2></div>", unsafe_allow_html=True)

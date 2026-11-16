@@ -68,6 +68,7 @@ def deduplicate_incidents(df):
         if i in used:
             continue
         base = df.iloc[i].to_dict()
+        base['merged_count'] = 1
         sources = [s.strip() for s in str(base['source']).split(',') if s.strip()]
         raw_texts = [base['raw_text']]
         vehs = list(base['vehs']) if isinstance(base['vehs'], list) else []

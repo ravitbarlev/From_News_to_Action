@@ -36,10 +36,12 @@ target_date = now_il.date() if RUN_TARGET == "today" else (now_il - timedelta(da
 start_target = datetime.combine(target_date, datetime.min.time(), tzinfo=IL_TZ)
 end_target = datetime.combine(target_date, datetime.max.time(), tzinfo=IL_TZ)
 
-
 class TrafficAccidentExtract(BaseModel):
     is_traffic_accident: bool = Field(
-        description="True אך ורק אם מדובר בתאונת דרכים הכוללת כלי רכב, אופנוע, קורקינט, אופניים או פגיעת רכב בהולך רגל. False עבור הפגנות, מחאות, פיגועים, אירועים ביטחוניים, קטטות, נפילות בבית או אירועים רפואיים שאינם תאונת דרכים."
+        description=(
+            "True אך ורק אם מדובר בתאונת דרכים יבשתית בישראל הכוללת כלי רכב מנועי, אופנוע, קורקינט, אופניים, רכבת או פגיעת רכב בהולך רגל. "
+            "False עבור תאונות ימיות (אוניות, סירות, ספינות), תאונות אוויריות, הפגנות, מחאות, פיגועים, אירועים ביטחוניים, קטטות, נפילות בבית או אירועים רפואיים שאינם תאונת דרכים."
+        )
     )
     accident_severity: str = Field(description="חומרת התאונה: light, moderate, severe, fatal, או 'not specified'")
     vehicle_types: List[str] = Field(description="רשימת רכבים באנגלית: car, bus, motorcycle, bicycle, electric scooter, truck")

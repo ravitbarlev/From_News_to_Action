@@ -102,6 +102,15 @@ def deduplicate_incidents(df):
                         if s.strip() and s.strip() not in sources:
                             sources.append(s.strip())
                     if sev_rank.get(cand['sev'], 0) > sev_rank.get(base['sev'], 0):
+
+                    veh_map = {
+                    'car': 'רכב פרטי', 'bus': 'אוטובוס', 'motorcycle': 'אופנוע', 'tractor': 'טרקטור',
+                    'bicycle': 'אופניים', 'truck': 'משאית', 'electric scooter': 'קורקינט חשמלי',
+                    'e-scooter': 'קורקינט חשמלי', 'minibus': 'מיניבוס', 'train': 'רכבת',
+                    'electric bicycle': 'אופניים חשמליים', 'e-bike': 'אופניים חשמליים',
+                    'mobility scooter': 'קלנועית', 'excavator': 'מחפר / כלי הנדסי',
+                    'scooter': 'קטנוע', 'commercial vehicle': 'רכב מסחרי'
+                }                      
                         base['sev'] = cand['sev']
                     if isinstance(cand['vehs'], list):
                         for v in cand['vehs']:
@@ -244,11 +253,14 @@ try:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ------------------ תרשימים ומפת מוקדים ------------------
-    g1, g2 = st.columns(2)
+
+
+    # ------------------ 3 תרשימים בשורה ------------------
+    g1, g2, g3 = st.columns(3)
     with g1:
         st.subheader("התפלגות חומרת תאונות")
         fig_sev = px.pie(df_f, names='sev', hole=0.45, color_discrete_sequence=px.colors.qualitative.Set2)
+        fig_sev.update_layout(font=dict(size=14), margin=dict(t=20, b=20, l=10, r=10))
         st.plotly_chart(fig_sev, use_container_width=True)
 
     with g2:
@@ -268,7 +280,38 @@ try:
             }
         )
         fig_haz.update_traces(textposition='outside', cliponaxis=False)
+        fig_haz.update_layout(font=dict(size=14), showlegend=False, margin=dict(t=30, b=20, l=10, r=10))
         st.plotly_chart(fig_haz, use_container_width=True)
+
+    with g3:
+        st.subheader("כלי רכב מעורבים")
+        all_vehs = []
+        for v_list in df_f['vehs']:
+            if isinstance(v_list, list):
+                for v in v_list:
+                    v_clean = str(v).strip().lower()
+                    if v_clean and v_clean not in ('none', 'not specified', 'unknown', 'לא מצוין'):
+                        all_vehs.append(veh_map.get(v_clean, v_clean))
+        if all_vehs:
+            veh_df = pd.Series(all_vehs).value_counts().reset_index()
+            veh_df.columns = ['סוג רכב', 'כמות']
+            fig_veh = px.bar(
+                veh_df,
+                x='כמות',
+                y='סוג רכב',
+                orientation='h',
+                text='כמות',
+                color_discrete_sequence=['#0288D1']
+            )
+            fig_veh.update_traces(textposition='outside', cliponaxis=False)
+            fig_veh.update_layout(
+                font=dict(size=14),
+                yaxis={'categoryorder': 'total ascending'},
+                margin=dict(t=30, b=20, l=10, r=30)
+            )
+            st.plotly_chart(fig_veh, use_container_width=True)
+        else:
+            st.info("אין נתוני כלי רכב לטווח שנבחר.")
 
     map_df = df_f.dropna(subset=['lat', 'lon'])
     if not map_df.empty:
